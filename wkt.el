@@ -20,8 +20,6 @@
 
 ;;; Commentary:
 
-;; http://docs.opengeospatial.org/is/12-063r5/12-063r5.html
-
 ;;; Code:
 
 (defgroup wkt nil

@@ -25,3 +25,9 @@ to be `wkt-mode`.
 - flymake if any linter is available
 
 - Info-lookup support if spec can be converted to info
+
+## References
+
+- [Standard](http://www.opengeospatial.org/standards/sfa)
+
+- [Well-known text representation of coordinate reference systems](http://www.opengeospatial.org/standards/wkt-crs)
