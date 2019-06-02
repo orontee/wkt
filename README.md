@@ -9,6 +9,9 @@ The mode provides:
 Files with `.prj` or `.wkt` extension have their default mode defined
 to be `wkt-mode`.
 
+![Emacs Screenshot](./screenshot.png)
+
+
 ## Todo
 
 - Pretty print buffer content
