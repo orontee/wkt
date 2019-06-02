@@ -1,0 +1,8 @@
+COORDINATEOPERATION["NZGD49 to NZGD2000",
+  SOURCECRS[…full WKT definition required here but omitted for brevity…],
+  TARGETCRS[…full WKT definition required here but omitted for brevity…],
+  METHOD["NTv2",ID["EPSG",9615]],
+  PARAMETERFILE["Latitude and longitude difference file","nzgd2kgrid0005.gsb"],
+  ID["EPSG",1568,CITATION["LINZS25000"],
+    URI[http://www.linz.govt.nz/geodetic/software-downloads/]],
+  REMARK["Coordinate transformation accuracy 0.1-1.0m"]]
