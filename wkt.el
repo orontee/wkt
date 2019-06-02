@@ -22,14 +22,6 @@
 
 ;; http://docs.opengeospatial.org/is/12-063r5/12-063r5.html
 
-;; TODO
-;; - Browse ID's
-;; - Add geometries
-;; - Display keywords in upper case
-;; - flymake
-;; - pretty-print
-;; - Info-lookup support?
-
 ;;; Code:
 
 (defgroup wkt nil
