@@ -47,7 +47,7 @@
 (defcustom wkt-mode-indent-level 2
   "Number of spaces for each indentation step."
   :type 'number
-  :group 'wkt)
+  :group 'wkt-mode)
 
 (defvar wkt-mode-keywords
   '("abridgedTransformation" "anchor" "angleUnit" "area" "axis"
@@ -137,7 +137,7 @@ region."
 (define-derived-mode wkt-mode
   prog-mode "WKT"
   "Major mode for editing files in Well Known Text format."
-  :group 'wkt
+  :group 'wkt-made
   (require 'font-lock)
   (setq-local case-fold-search t)
   (setq-local comment-start nil)
