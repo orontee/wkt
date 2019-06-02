@@ -126,9 +126,9 @@ region."
 (defun wkt-mode-indent-line ()
   "Indent current line"
   (interactive)
-  (let* ((parse-status
-	  (save-excursion (syntax-ppss (point-at-bol))))
-	 (offset (- (point) (save-excursion (back-to-indentation) (point)))))
+  (let ((parse-status
+	 (save-excursion (syntax-ppss (point-at-bol))))
+	(offset (- (point) (save-excursion (back-to-indentation) (point)))))
     (unless (nth 3 parse-status)
       (indent-line-to (* (nth 0 parse-status) wkt-mode-indent-level))
       (when (> offset 0) (forward-char offset)))))
