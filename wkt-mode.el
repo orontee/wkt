@@ -1,9 +1,11 @@
-;;; wkt.el --- Support for Well Known Text format    -*- lexical-binding: t; -*-
+;;; wkt-mode.el --- Support for Well Known Text format    -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2019  Matthias Meulien
 
 ;; Author: Matthias Meulien <orontee@gmail.com>
 ;; Keywords: languages
+;; Version: 0.1
+;; URL: https://github.com/orontee/wkt-mode
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -20,19 +22,34 @@
 
 ;;; Commentary:
 
+;; Emacs major mode to edit files in Well Known Text format
+
+;; The mode provides:
+;; - Syntax higlighting
+;; - Line indentation
+;; - Command to beautify buffer content
+
+;; Files with .prj or .wkt extensions have their major mode defined to
+;; be `wkt-mode'.
+
+;; To beautify the buffer content, either enter the key sequence "C-c
+;; C-f" or call the command `wkt-beautify': It adds new lines before
+;; keywords preceded by a comma then reindent. This command applies to
+;; the active region or whole buffer.
+
 ;;; Code:
 
-(defgroup wkt nil
+(defgroup wkt-mode nil
   "Major mode for editing files in Well Known Text format"
   :version "27"
   :prefix "wkt-")
 
-(defcustom wkt-indent-level 2
+(defcustom wkt-mode-indent-level 2
   "Number of spaces for each indentation step."
   :type 'number
   :group 'wkt)
 
-(defvar wkt-keywords
+(defvar wkt-mode-keywords
   '("abridgedTransformation" "anchor" "angleUnit" "area" "axis"
     "baseEngCRS" "baseGeodCRS" "baseParamCRS" "baseProjCRS"
     "baseTimeCRS" "baseVertCRS" "bBox" "bearing" "boundCRS"
@@ -48,7 +65,7 @@
     "timeOrigin" "timeUnit" "unit" "uri" "vDatum" "vertCRS" "verticalCRS"
     "verticalDatum" "verticalExtent"))
 
-(defvar wkt-enumeration-axis-direction
+(defvar wkt-mode-enumeration-axis-direction
   '("north" "northNorthEast" "northEast" "eastNorthEast" "east"
     "eastSouthEast" "southEast" "southSouthEast" "south" "southWest"
     "westSouthWest" "west" "westNorthWest" "northWest" "northNorthWest"
@@ -58,17 +75,17 @@
     "displayUp" "displayDown" "future" "past" "towards" "awayFrom"
     "unspecified"))
 
-(defvar wkt-enumeration-cs-type
+(defvar wkt-mode-enumeration-cs-type
   '("affine" "Cartesian" "cylindrical" "ellipsoidal" "linear" "parametric"
     "polar" "spherical" "temporal" "vertical"))
 
-(defvar wkt-enumeration-pixelincell
+(defvar wkt-mode-enumeration-pixelincell
   '("cellCentre" "cellCenter" "cellCorner"))
 
-(defvar wkt-font-lock-keywords
-  `((,(regexp-opt wkt-keywords 'symbols) . font-lock-keyword-face)
-    (,(regexp-opt (append wkt-enumeration-axis-direction
-			  wkt-enumeration-cs-type)
+(defvar wkt-mode-font-lock-keywords
+  `((,(regexp-opt wkt-mode-keywords 'symbols) . font-lock-keyword-face)
+    (,(regexp-opt (append wkt-mode-enumeration-axis-direction
+			  wkt-mode-enumeration-cs-type)
 		  'symbols)
      . font-lock-builtin-face))
   "List of keywards for search-based fontification")
@@ -84,11 +101,11 @@
     st)
   "Syntax table used while in `wkt-mode'.")
 
-(defun wkt--reformat-region (begin end)
+(defun wkt-mode--reformat-region (begin end)
   (interactive "*r")
   (let ((start-line (line-number-at-pos begin))
 	(case-fold-search t)
-	(regex (regexp-opt wkt-keywords ",[\s-]*\\(" t)))
+	(regex (regexp-opt wkt-mode-keywords ",[\s-]*\\(" t)))
     (save-excursion
       (save-restriction
 	(narrow-to-region begin end)
@@ -97,30 +114,26 @@
 	  (replace-match ",\n\\1" t nil))
 	(indent-region (point-min) (point-max))))))
 
+;;;###autoload
 (defun wkt-beautify ()
   "Beautify the active region or entire buffer if no active
 region."
   (interactive)
   (if (use-region-p)
-      (wkt--reformat-region (region-beginning) (region-end))
-    (wkt--reformat-region (buffer-end -1) (buffer-end 1))))
+      (wkt-mode--reformat-region (region-beginning) (region-end))
+    (wkt-mode--reformat-region (buffer-end -1) (buffer-end 1))))
 
-(defvar wkt-mode-map
-  (let ((map (make-sparse-keymap)))
-    (define-key wkt-mode-map (kbd "C-c C-f") 'wkt-beautify)
-    map)
-  "Keymap for `wkt-mode'.")
-
-(defun wkt-indent-line ()
+(defun wkt-mode-indent-line ()
   "Indent current line"
   (interactive)
   (let* ((parse-status
 	  (save-excursion (syntax-ppss (point-at-bol))))
 	 (offset (- (point) (save-excursion (back-to-indentation) (point)))))
     (unless (nth 3 parse-status)
-      (indent-line-to (* (nth 0 parse-status) wkt-indent-level))
+      (indent-line-to (* (nth 0 parse-status) wkt-mode-indent-level))
       (when (> offset 0) (forward-char offset)))))
 
+;;;###autoload
 (define-derived-mode wkt-mode
   prog-mode "WKT"
   "Major mode for editing files in Well Known Text format."
@@ -129,13 +142,16 @@ region."
   (setq-local case-fold-search t)
   (setq-local comment-start nil)
   (setq-local font-lock-defaults
-	      '(wkt-font-lock-keywords nil t))
-  (setq-local indent-line-function 'wkt-indent-line)
+	      '(wkt-mode-font-lock-keywords nil t))
+  (setq-local indent-line-function 'wkt-mode-indent-line)
+  (define-key wkt-mode-map (kbd "C-c C-f") 'wkt-beautify)
   (goto-address-mode t)
   (electric-pair-local-mode t))
 
+;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.wkt\\'" . wkt-mode))
+;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.prj\\'" . wkt-mode))
 
-(provide 'wkt)
-;;; wkt.el ends here
+(provide 'wkt-mode)
+;;; wkt-mode.el ends here

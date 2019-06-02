@@ -5,15 +5,15 @@ Emacs major mode to edit files in Well Known Text format
 The mode provides:
 - Syntax higlighting
 - Line indentation
-- Beautify buffer content
+- Command to beautify buffer content
 
-Files with `.prj` or `.wkt` extension have their default mode defined
+Files with `.prj` or `.wkt` extensions have their major mode defined
 to be `wkt-mode`.
 
-To beautify the buffer content, enter the key sequence `C-c C-f` or
-call `M-x wkt-beautify`: It applies to the active region or whole
-buffer, and adds new lines before keywords preceded by a comma then
-reindent.
+To beautify the buffer content, either enter the key sequence `C-c
+C-f` or call `M-x wkt-beautify`: It adds new lines before keywords
+preceded by a comma then reindent. This command applies to the active
+region or whole buffer.
 
 ![Emacs Screenshot](./screenshot.png)
 
