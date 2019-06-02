@@ -84,8 +84,30 @@
     st)
   "Syntax table used while in `wkt-mode'.")
 
+(defun wkt--reformat-region (begin end)
+  (interactive "*r")
+  (let ((start-line (line-number-at-pos begin))
+	(case-fold-search t)
+	(regex (regexp-opt wkt-keywords ",[\s-]*\\(" t)))
+    (save-excursion
+      (save-restriction
+	(narrow-to-region begin end)
+	(goto-char (point-min))
+	(while (re-search-forward regex nil t)
+	  (replace-match ",\n\\1" t nil))
+	(indent-region (point-min) (point-max))))))
+
+(defun wkt-beautify ()
+  "Beautify the active region or entire buffer if no active
+region."
+  (interactive)
+  (if (use-region-p)
+      (wkt--reformat-region (region-beginning) (region-end))
+    (wkt--reformat-region (buffer-end -1) (buffer-end 1))))
+
 (defvar wkt-mode-map
   (let ((map (make-sparse-keymap)))
+    (define-key wkt-mode-map (kbd "C-c C-f") 'wkt-beautify)
     map)
   "Keymap for `wkt-mode'.")
 
@@ -104,7 +126,7 @@
   "Major mode for editing files in Well Known Text format."
   :group 'wkt
   (require 'font-lock)
-  (setq-local case-fold-search nil)
+  (setq-local case-fold-search t)
   (setq-local comment-start nil)
   (setq-local font-lock-defaults
 	      '(wkt-font-lock-keywords nil t))

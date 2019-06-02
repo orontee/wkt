@@ -1,4 +1,5 @@
 VERTCRS["NAVD88",
   VDATUM["North American Vertical Datum 1988"],
   CS[vertical,1],
-  AXIS["gravity-related height (H)",up],LENGTHUNIT["metre",1.0]]
+  AXIS["gravity-related height (H)",up],
+  LENGTHUNIT["metre",1.0]]

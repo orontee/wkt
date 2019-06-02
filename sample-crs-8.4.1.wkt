@@ -10,5 +10,6 @@ GEODETICCRS["JGD2000",
   AREA["Japan"],
   BBOX[17.09,122.38,46.05,157.64],
   TIMEEXTENT[2002-04-01,2011-10-21],
-  ID["EPSG",4946,URI["urn:ogc:def:crs:EPSG::4946"]],
+  ID["EPSG",4946,
+    URI["urn:ogc:def:crs:EPSG::4946"]],
   REMARK["注：JGD2000ジオセントリックは現在JGD2011に代わりました。"]]
