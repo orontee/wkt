@@ -42,6 +42,7 @@
 (defgroup wkt-mode nil
   "Major mode for editing files in Well Known Text format"
   :version "27"
+  :group 'languages
   :prefix "wkt-")
 
 (defcustom wkt-mode-indent-level 2
@@ -105,7 +106,7 @@
   (interactive "*r")
   (let ((start-line (line-number-at-pos begin))
 	(case-fold-search t)
-	(regex (regexp-opt wkt-mode-keywords ",[\s-]*\\(" t)))
+	(regex (regexp-opt wkt-mode-keywords ",[\s-]*\\(")))
     (save-excursion
       (save-restriction
 	(narrow-to-region begin end)
